@@ -1,12 +1,21 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
-import { ApiContext } from '../../context/api/ApiContext';
-import { ThemeContext } from '../../context/theme/ThemeContext';
+import { useDispatch } from 'react-redux';
 
-export const Pagination = ( { isEnabled } ) => {
+import { ThemeContext } from '../../context/theme/ThemeContext';
+import { apiChangePagination } from '../../redux/actions/apiActionsCreator';
+
+export const Pagination = ({ currentPage, ITEMS_PER_PAGE, filterActive, data }) => {
 
     const { theme } = useContext( ThemeContext );
-    const { productList, currentPage, recoverProductListInit } = useContext(ApiContext);
+
+    const dispatch = useDispatch();
+
+    const recoverProductListInit = (previousPage) => {
+        previousPage
+            ? dispatch(apiChangePagination(currentPage + 1, `?page=${ currentPage + 1 }&itemsPerPage=${ ITEMS_PER_PAGE }&active=${ filterActive }`))
+            : dispatch(apiChangePagination(currentPage - 1, `?page=${ currentPage - 1 }&itemsPerPage=${ ITEMS_PER_PAGE }&active=${ filterActive }`))
+    }
 
     return (
         <View style={ styles.paginationContainer }>
@@ -14,7 +23,7 @@ export const Pagination = ( { isEnabled } ) => {
             {
                 currentPage > 0
                     ? <Pressable
-                        onPress={ () => recoverProductListInit( isEnabled, currentPage - 1 ) }
+                        onPress={ () => recoverProductListInit( false ) }
                         style={{ ...styles.btn, backgroundColor: theme.globalColors.primaryText }}
                     >
                         <Text style={{ color: theme.globalColors.white }}>Anterior</Text>
@@ -29,9 +38,9 @@ export const Pagination = ( { isEnabled } ) => {
 
             <View style={ styles.paginationRow }>
             {
-                productList.nextPage > 0
+                data.nextPage > 0
                     ? <Pressable
-                        onPress={ () => recoverProductListInit( isEnabled, currentPage + 1 ) }
+                        onPress={ () => recoverProductListInit( true ) }
                         style={{ ...styles.btn, backgroundColor: theme.globalColors.primaryText }}
                     >
                         <Text style={{ color: theme.globalColors.white }}>Próxima</Text>

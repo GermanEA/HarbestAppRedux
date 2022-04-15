@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
-import { Text, StyleSheet, ColorValue, View, Switch } from 'react-native';
-// import { Switch } from 'react-native-gesture-handler';
+import { Text, StyleSheet, View, Switch } from 'react-native';
 
 import { ThemeContext } from '../../context/theme/ThemeContext';
 

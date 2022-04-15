@@ -2,18 +2,18 @@ import React, { useContext, useState } from 'react';
 import { ActivityIndicator, Animated, View } from 'react-native';
 
 import { ThemeContext } from '../../context/theme/ThemeContext';
-// import { useAnimation } from '../../hooks/animation/useAnimation';
+import { useAnimation } from '../../hooks/animation/useAnimation';
 
 export const FadeInImage = ({ style = {}, styleView = {} }) => {
 
-    // const { opacity, fadeIn } = useAnimation();
+    const { opacity, fadeIn } = useAnimation();
     const [ isLoading, setIsLoading ] = useState( true );
 
     const { theme:{ colors }, } = useContext( ThemeContext );
 
     const finishLoading = () => {
         setIsLoading(false);
-        // fadeIn();
+        fadeIn();
     }
 
     return (
@@ -37,7 +37,7 @@ export const FadeInImage = ({ style = {}, styleView = {} }) => {
                 onLoadEnd={ finishLoading }
                 style={{
                     ...style,
-                    // opacity
+                    opacity
                 }}
             />
 
